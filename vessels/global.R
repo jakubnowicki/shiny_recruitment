@@ -3,7 +3,7 @@ library(readr)
 
 # data -------------------------------------------------------------
 
-ships <- read_csv("data/ships.csv") %>% rename_all(tolower)
+ships <- read_csv("data/ships.csv")
 
 # additional objects ------------------------------------------------------
 
@@ -11,7 +11,7 @@ ships <- read_csv("data/ships.csv") %>% rename_all(tolower)
 vessel_types <- unique(ships$ship_type)
 
 # ship names (all)
-vessel_names <- unique(ships$shipname)
+vessel_names <- unique(ships$SHIPNAME)
 
 
 # modules -----------------------------------------------------------------
