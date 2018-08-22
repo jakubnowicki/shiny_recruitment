@@ -15,7 +15,7 @@ shinyServer(function(input, output) {
 
 # comment -----------------------------------------------------------------
   output$comment <- renderText(
-    'Comment'
+    callModule(dropdownValue, id = 'vessel_type')
   )
     
 })
