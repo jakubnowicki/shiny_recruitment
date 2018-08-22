@@ -14,8 +14,8 @@ shinyUI(fluidPage(
 
 # inputs ------------------------------------------------------------------
     sidebarPanel(
-      selectInput(inputId = 'vessel_type', label = 'Vessel types', choices = vessel_types),
-      selectInput(inputId = 'vessel_id', label = 'Vessel Id', choices = vessel_names)
+      dropdownUI(id = 'vessel_type', label = 'Vessel types', choices = vessel_types),
+      dropdownUI(id = 'vessel_id', label = 'Vessel name', choices = vessel_names)
     ),
 # main panel --------------------------------------------------------------
     mainPanel(
