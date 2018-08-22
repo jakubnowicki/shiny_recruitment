@@ -10,9 +10,6 @@ ships <- read_csv("data/ships.csv")
 # ship types for selectInput
 vessel_types <- unique(ships$ship_type)
 
-# ship names (all)
-vessel_names <- unique(ships$SHIPNAME)
-
 
 # modules -----------------------------------------------------------------
 
