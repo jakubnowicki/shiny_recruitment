@@ -3,7 +3,7 @@ library(readr)
 
 # data -------------------------------------------------------------
 
-ships <- read_csv("data/ships.csv")
+ships <- read_csv("data/ships_light.csv")
 
 # additional objects ------------------------------------------------------
 
