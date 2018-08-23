@@ -3,6 +3,7 @@
 library(shiny)
 library(leaflet)
 library(dplyr)
+library(geosphere)
 
 shinyServer(function(input, output, session) {
   
@@ -31,24 +32,39 @@ shinyServer(function(input, output, session) {
 # ship data filter --------------------------------------------------------
 
 selected_vessel <- reactive({
-  tmp <- ships %>% filter(SHIPNAME == callModule(dropdownValue, id = 'vessel_name')) %>% 
-    select(LON, LAT)
+  # select ship
+  ship <- ships %>% filter(SHIPNAME == callModule(dropdownValue, id = 'vessel_name')) %>% 
+    select(LON, LAT,DATETIME)
   
-  tmp[1:2,]
+  max_dist <- 0
+  coordinates <- NULL
+  
+  # get max distance
+  for (i in 1:(nrow(ship) - 1)) {
+    tmp <- distm(ship[i,1:2], ship[i+1,1:2])
+    if (tmp > max_dist) {
+      max_dist <- tmp
+      coordinates <- ship[i:(i+1),1:2]
+      time <- ship[i+1,'DATETIME'] - ship[i,'DATETIME']
+    }
+  }
+  
+  list(distance = max_dist, coordinates = coordinates, time = time)
 })  
   
   
 # map ---------------------------------------------------------------------
 
   output$map <- renderLeaflet(
-      leaflet(data = selected_vessel()) %>%
+      leaflet(data = selected_vessel()$coordinates) %>%
         addTiles() %>% 
         addMarkers()
       )
 
 # comment -----------------------------------------------------------------
   output$comment <- renderText(
-    callModule(dropdownValue, id = 'vessel_name')
+    paste0(callModule(dropdownValue, id = 'vessel_name'),': ',
+           round(selected_vessel()$distance,0), ' meters')
   )
     
 })
