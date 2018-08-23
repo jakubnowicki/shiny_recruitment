@@ -27,17 +27,28 @@ shinyServer(function(input, output, session) {
     }
   })
 
+
+# ship data filter --------------------------------------------------------
+
+selected_vessel <- reactive({
+  tmp <- ships %>% filter(SHIPNAME == callModule(dropdownValue, id = 'vessel_name')) %>% 
+    select(LON, LAT)
+  
+  tmp[1:2,]
+})  
+  
   
 # map ---------------------------------------------------------------------
 
   output$map <- renderLeaflet(
-      leaflet() %>%
-        addTiles()
+      leaflet(data = selected_vessel()) %>%
+        addTiles() %>% 
+        addMarkers()
       )
 
 # comment -----------------------------------------------------------------
   output$comment <- renderText(
-    callModule(dropdownValue, id = 'vessel_type')
+    callModule(dropdownValue, id = 'vessel_name')
   )
     
 })
